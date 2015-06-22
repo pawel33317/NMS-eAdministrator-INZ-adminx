@@ -1,6 +1,6 @@
 <?php
 
-class Adminpanel extends Controller {
+class Usersettings extends Controller {
 
     function __construct() {
         parent::__construct();
@@ -8,6 +8,7 @@ class Adminpanel extends Controller {
         $this->auth = new Auth();
         //gwarantuje ze jest zalogowany jak nie to przekieruje
         $this->auth->handleLogin();
+        $this->view->leftMenu = array();
     }
 
     private function readLog($file){
@@ -66,13 +67,25 @@ class Adminpanel extends Controller {
     }
 
     function index($show = null) {
+        array_push($this->view->leftMenu, array('ico' => 'user', 'link' => 'usersettings/users', 'title' => "Użytkownicy"));
+        array_push($this->view->leftMenu, array('ico' => 'inbox', 'link' => 'usersettings/devices', 'title' => "Urządzenia"));
+        array_push($this->view->leftMenu, array('ico' => 'ok', 'link' => 'usersettings/paid', 'title' => "Opłaceni"));
+        array_push($this->view->leftMenu, array('ico' => 'lock', 'link' => 'usersettings/unpaid', 'title' => "Zablokowani"));
+        array_push($this->view->leftMenu, array('ico' => 'remove', 'link' => 'usersettings/unaccepted', 'title' => "Niezaakceptowani"));
+        array_push($this->view->leftMenu, array('ico' => 'plus', 'link' => 'usersettings/adduser', 'title' => "Dodaj nowego użytkownika"));
+        array_push($this->view->leftMenu, array('ico' => 'plus', 'link' => 'usersettings/adddevice', 'title' => "Dodaj nowe urządzenie"));
+        array_push($this->view->leftMenu, array('ico' => 'screenshot', 'link' => 'usersettings/flor/1', 'title' => "Piętro - 1"));
+        array_push($this->view->leftMenu, array('ico' => 'screenshot', 'link' => 'usersettings/flor/2', 'title' => "Piętro - 2"));
+
+        
         $this->view->render('header');
+        $this->view->render('leftMenu');
         $this->loadStats();
 
         array_push($this->view->info, array('type' => 'warning', 'text' => 'xxxxxxxxxxxo '
             . 'rejestrować 2 razy tego samego urządzenia, w razie problemów zgłosić się do administratora pokój 401.'));
-        $this->view->render('adminpanel/info');
-        $this->view->render('footer');
+        $this->view->render('usersettings/info');
+        $this->view->render('footerWithMenu');
     }
 
 }

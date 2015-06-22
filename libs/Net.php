@@ -5,19 +5,38 @@ class Net extends Controller{
         parent::__construct();
         parent::loadModel('net');
     }
-   
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    /**
+     * Get host MAC address
+     * 
+     * @return string host MAC address
+     */
+    public function getMAC() {
+        $ip = $_SERVER['REMOTE_ADDR'];
+        $mac = false;
+        $arp = `sudo arp -a -n $ip`;
+        if (!isset($arp)) {
+//           throw new Exception('Arp commend error');
+        }
+        $lines = explode("\n", $arp);
+        if (empty($lines[0])) {
+//            throw new Exception('Arp parsing error 1');
+        }
+        $tmp = explode('at ', $lines[0]);
+        if (empty($tmp[1])) {
+//            throw new Exception('Arp parsing error 2');
+        }
+        $tmp = explode(' [', @$tmp[1]);
+        if (empty($tmp[0])) {
+//            throw new Exception('Arp parsing error 3');
+        }
+
+//            return $tmp[0];       //return 'aa:aa:aa:aa:aa:ab';
+        return '11:22:33:44:55:64';
+    }
+    /**
+     * Gen free IP address
+     * @return mixed IPaddress or false
+     */
     public function getNewIP() {
         $oktet1 = 10;
         $oktet2 = 0;
@@ -46,6 +65,11 @@ class Net extends Controller{
         } else {
             return false;
         }
+    }
+    
+    public function newDevice(){
+        $file = Linux::$fileToReload_newUSR;
+        $linuxOperation = `echo 1 > $file'newusr.s'`;
     }
 
 }

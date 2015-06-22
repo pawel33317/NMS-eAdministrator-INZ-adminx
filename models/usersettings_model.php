@@ -1,6 +1,6 @@
 <?php
 
-class Adminpanel_Model extends Model {
+class Usersettings_Model extends Model {
 
     public function __construct() {
         parent::__construct();
