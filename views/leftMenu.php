@@ -8,7 +8,10 @@
         
         if (isset($this->leftMenu)) {
             foreach ($this->leftMenu as $link) {
-                echo '<li ><a href="'.URL.$link['link'].'"><span class="glyphicon glyphicon-'.$link['ico'].'" aria-hidden="true" style="margin-right:5px;"> </span>'.$link['title'].'</a></li>';
+                echo '<li';
+                if ($link['active'])
+                    echo ' class="active"';
+                echo '><a href="'.URL.$link['link'].'"><span class="glyphicon glyphicon-'.$link['ico'].'" aria-hidden="true" style="margin-right:5px;"> </span>'.$link['title'].'</a></li>';
             }
         }
     if (!empty($this->leftMenu)) 

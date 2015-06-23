@@ -29,9 +29,11 @@
     <p class="bg-primary" style="border-radius: 5px; padding:10px; width:100%;  display: inline-block;"><strong>Monitorowane usługi (5)</strong> (zielony - działają ok)</p>
 </div>-->
 <div class="alert alert-info"><strong>Monitorowane usługi (5)</strong> (zielony - działają ok)</div>
-<button type="button" class="btn <?php echo ($this->service['DHCPD'])?'btn-success':'btn-danger'; ?>">DHCPD</button>
-<button type="button" class="btn <?php echo ($this->service['HTTPD'])?'btn-success':'btn-danger'; ?>">HTTPD</button>
-<button type="button" class="btn <?php echo ($this->service['MYSQLD'])?'btn-success':'btn-danger'; ?>">MYSQLD</button>
-<button type="button" class="btn <?php echo ($this->service['CROND'])?'btn-success':'btn-danger'; ?>">CROND</button>
-<button type="button" class="btn <?php echo ($this->service['iptables'])?'btn-success':'btn-danger'; ?>">iptables -L -n</button>
+        <?php
+            foreach ($this->serviceStates as $service) {
+                echo '<button type="button" class="btn ';
+                echo ($service['state'] == 1)?'btn-success':'btn-danger';
+                echo '">'.$service['service'].'</button> ';
+            }   
+        ?>
 

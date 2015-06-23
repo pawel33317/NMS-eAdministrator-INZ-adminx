@@ -15,7 +15,10 @@ class Stats_Model extends Model {
         $sth = $this->db->select('select count(*) as ilosc from devices', array());
         return $sth[0]['ilosc'];
     }
-
+    public function getServiceStates() {
+        $sth = $this->db->select('select * from services', array());
+        return $sth;
+    }
     public function userWithMaxDevices() {
         $sth = $this->db->select('SELECT login, user_id, COUNT(d.user_id) as \'ilosc\'
 	FROM users AS u left JOIN devices AS d

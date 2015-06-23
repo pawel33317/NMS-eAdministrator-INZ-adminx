@@ -52,12 +52,7 @@ class Stats extends Controller {
         $this->view->stats['lastweek'] = $lastweek;
         $this->view->stats['lastweeku'] = $lastweeku;
 
-        $this->view->service['DHCPD'] = true;
-        $this->view->service['HTTPD'] = true;
-        $this->view->service['MYSQLD'] = true;
-        $this->view->service['CROND'] = true;
-        $this->view->service['iptables'] = true;
-        
+        $this->view->serviceStates = $this->model->getServiceStates();
         
         /*$LinuxLogs = new Linux();
         $LinuxLogs->initLog();
@@ -80,5 +75,4 @@ class Stats extends Controller {
         $this->view->render('usersettings/info');*/
         $this->view->render('footerWithMenu');
     }
-
 }

@@ -66,7 +66,11 @@ class Net extends Controller{
             return false;
         }
     }
-    
+   
+    /*public function serviceState($service){
+        return $this->model->serviceState($service);
+    }
+    */
     public function newDevice(){
         $file = Linux::$fileToReload_newUSR;
         $linuxOperation = `echo 1 > $file'newusr.s'`;

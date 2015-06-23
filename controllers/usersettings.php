@@ -10,80 +10,81 @@ class Usersettings extends Controller {
         $this->auth->handleLogin();
         $this->view->leftMenu = array();
     }
-
-    private function readLog($file){
-        $fileContent = file_get_contents($file, true);
-        $convert = explode("\n", $fileContent);
-        $fileContent = '';
-        for ($i = 0; $i < count($convert); $i++) {
-            $fileContent = $fileContent . $convert[$i];
-            if ($i < count($convert) - 1)
-                $fileContent = $fileContent . '<br>';
+    
+    function renderLeftMenu($active = NULL){
+        array_push($this->view->leftMenu, array('active' => false, 'ico' => 'user', 'link' => 'usersettings/index', 'title' => "Użytkownicy"));
+        array_push($this->view->leftMenu, array('active' => false, 'ico' => 'inbox', 'link' => 'usersettings/devices', 'title' => "Urządzenia"));
+        array_push($this->view->leftMenu, array('active' => false, 'ico' => 'ok', 'link' => 'usersettings/paid', 'title' => "Opłaceni"));
+        array_push($this->view->leftMenu, array('active' => false, 'ico' => 'remove', 'link' => 'usersettings/unpaid', 'title' => "Nieopłaceni"));
+        array_push($this->view->leftMenu, array('active' => false, 'ico' => 'lock', 'link' => 'usersettings/blocked', 'title' => "Zablokowani"));
+        array_push($this->view->leftMenu, array('active' => false, 'ico' => 'thumbs-up', 'link' => 'usersettings/accepted', 'title' => "Zaakceptowani"));
+        array_push($this->view->leftMenu, array('active' => false, 'ico' => 'thumbs-down', 'link' => 'usersettings/unaccepted', 'title' => "Niezaakceptowani"));
+        array_push($this->view->leftMenu, array('active' => false, 'ico' => 'plus', 'link' => 'usersettings/adduser', 'title' => "Dodaj nowego użytkownika"));
+        array_push($this->view->leftMenu, array('active' => false, 'ico' => 'plus', 'link' => 'usersettings/adddevice', 'title' => "Dodaj nowe urządzenie"));
+        for ($i = 0; $i < count($this->view->leftMenu); $i++) {
+            if ($this->view->leftMenu[$i]['link'] == 'usersettings/'.$active){
+                $this->view->leftMenu[$i]['active'] = true;
+                break;
+            }
         }
-        return $fileContent;
-    }
-
-
-    private function loadStats() {
-
-        $wszyscy_userzy = $this->model->getUsersCount();
-        echo '$wszyscy_userzy: ' . $wszyscy_userzy . '<br>';
-        $wszystkie_urzadzenia = $this->model->getDevicesCount();
-        echo '$wszystkie_urzadzenia: ' . $wszystkie_urzadzenia . '<br>';
-        $srednia_luczba_urzadzeni_na_usera = round($wszystkie_urzadzenia / $wszyscy_userzy, 2);
-        echo '$srednia_luczba_urzadzeni_na_usera: ' . $srednia_luczba_urzadzeni_na_usera . '<br>';
-
-        $tmpUserWithMaxDevices = $this->model->userWithMaxDevices();
-        $user_max_urzadzen_ilosc = $tmpUserWithMaxDevices['ilosc'];
-        $user_max_urzadzen_login = $tmpUserWithMaxDevices['login'];
-        echo '$user_max_urzadzen_ilosc: ' . $user_max_urzadzen_ilosc . '<br>';
-        echo '$user_max_urzadzen_login: ' . $user_max_urzadzen_login . '<br>';
-
-
-        $oplaceni = $this->model->getPaidUsers();
-        $zablokowani = $this->model->getBlockedUsers();
-        $nieaktywni = $this->model->getUnactivatedUsers();
-        $s24h = $this->model->getUsersRegisteredLast24h();
-        $s24hu = $this->model->getDevicesRegisteredLast24h();
-        $lastweek = $this->model->getUsersRegisteredLastWeek();
-        $lastweeku = $this->model->getDevicesRegisteredLastWeek();
-        echo '$oplaceni: ' . $oplaceni . '<br>';
-        echo '$zablokowani: ' . $zablokowani . '<br>';
-        echo '$nieaktywni: ' . $nieaktywni . '<br>';
-        echo '$s24h: ' . $s24h . '<br>';
-        echo '$s24hu: ' . $s24hu . '<br>';
-        echo '$lastweek: ' . $lastweek . '<br>';
-        echo '$lastweeku: ' . $lastweeku . '<br>';
-
-        $LinuxLogs = new Linux();
-        $LinuxLogs->initLog();
-        $file1 = $this->readLog($LinuxLogs->_log_last5);
-        $file2 = $this->readLog($LinuxLogs->_log_tail5dmesg);
-        $file3 = $this->readLog($LinuxLogs->_log_5varLogCron);
-        $file4 = $this->readLog($LinuxLogs->_log_tail5varLogMessages);
-        $file5 = $this->readLog($LinuxLogs->_log_tail10varLibDhcpdDhcpdLeases);
-        $file6 = $this->readLog($LinuxLogs->_log_panelLog);
-
-    }
-
-    function index($show = null) {
-        array_push($this->view->leftMenu, array('ico' => 'user', 'link' => 'usersettings/users', 'title' => "Użytkownicy"));
-        array_push($this->view->leftMenu, array('ico' => 'inbox', 'link' => 'usersettings/devices', 'title' => "Urządzenia"));
-        array_push($this->view->leftMenu, array('ico' => 'ok', 'link' => 'usersettings/paid', 'title' => "Opłaceni"));
-        array_push($this->view->leftMenu, array('ico' => 'lock', 'link' => 'usersettings/unpaid', 'title' => "Zablokowani"));
-        array_push($this->view->leftMenu, array('ico' => 'remove', 'link' => 'usersettings/unaccepted', 'title' => "Niezaakceptowani"));
-        array_push($this->view->leftMenu, array('ico' => 'plus', 'link' => 'usersettings/adduser', 'title' => "Dodaj nowego użytkownika"));
-        array_push($this->view->leftMenu, array('ico' => 'plus', 'link' => 'usersettings/adddevice', 'title' => "Dodaj nowe urządzenie"));
-        array_push($this->view->leftMenu, array('ico' => 'screenshot', 'link' => 'usersettings/flor/1', 'title' => "Piętro - 1"));
-        array_push($this->view->leftMenu, array('ico' => 'screenshot', 'link' => 'usersettings/flor/2', 'title' => "Piętro - 2"));
-
-        
-        $this->view->render('header');
         $this->view->render('leftMenu');
-        $this->loadStats();
+    }
+    
+    
+    private function showUsers($count, $orderBy, $sort, $start, $where){
+        //*1 parsuje na inta
+        $this->view->listing['count'] = $count*1;
+        $this->view->listing['orderBy'] = $orderBy;
+        $this->view->listing['start'] = $start;
+        $this->view->listing['where'] = $where;
+        $this->view->listing['sort'] = ($sort == 'ASC')?'DESC':'ASC';
+        $this->view->listing['oldsort'] = ($sort != 'ASC')?'DESC':'ASC';
+        $this->view->users = $this->model->getUsers($count*1, $orderBy, $sort, $start*1, $where);
+        $this->view->render('usersettings/showUsers');
+    }
 
-        array_push($this->view->info, array('type' => 'warning', 'text' => 'xxxxxxxxxxxo '
-            . 'rejestrować 2 razy tego samego urządzenia, w razie problemów zgłosić się do administratora pokój 401.'));
+    private function showNumberOfPages($visible, $current, $where){       
+        $all = $this->model->getUsersCount($where);
+        $this->view->pages = array();
+        $index = 1;
+        for($i = 0; $i < $all ; $i=$i+$visible){
+            $active = ($i==$current)?true:false;
+            array_push($this->view->pages, array('index' => $index, 'start' => $i, 'active' => $active));
+            $index++;
+        }
+        $this->view->render('usersettings/showPages');
+    }
+    private function showRecordsLimit(){       
+        $this->view->render('usersettings/showRecordsLimit');
+    }
+    
+    function unaccepted($count = 50, $orderBy = 'id', $sort = 'DESC', $start = 0) {
+        $this->index($count, $orderBy, $sort, $start, $where = ' where stan = 0 ', 'unaccepted');
+    }
+    
+    function accepted($count = 50, $orderBy = 'id', $sort = 'DESC', $start = 0) {
+        $this->index($count, $orderBy, $sort, $start, $where = ' where stan = 1 ', 'accepted');
+    }
+    function paid($count = 50, $orderBy = 'id', $sort = 'DESC', $start = 0) {
+        $this->index($count, $orderBy, $sort, $start, $where = ' where oplata = 1 ', 'paid');
+    }
+    
+    function blocked($count = 50, $orderBy = 'id', $sort = 'DESC', $start = 0) {
+        $this->index($count, $orderBy, $sort, $start, $where = ' where stan = 2 ', 'blocked');
+    }
+    
+    function unpaid($count = 50, $orderBy = 'id', $sort = 'DESC', $start = 0) {
+        $this->index($count, $orderBy, $sort, $start, $where = ' where oplata = 0 ', 'unpaid');
+    }
+    
+    function index($count = 50, $orderBy = 'id', $sort = 'DESC', $start = 0, $where = '',$callbackLink = "index") {
+        $this->view->render('header');
+        $this->renderLeftMenu($callbackLink);
+        $this->view->showUsersCallbackLink = $callbackLink;
+        $this->showUsers($count, $orderBy, $sort, $start, $where);
+        $this->showNumberOfPages($count, $start, $where);
+        $this->showRecordsLimit();
+        array_push($this->view->info, array('type' => 'warning', 'text' => 'Aby przejść do urządzeń użutkownika kliknij na liczbę urządzeń.<br>Aby przejść do użytkownika kliknij na jego ID.'));
         $this->view->render('usersettings/info');
         $this->view->render('footerWithMenu');
     }
