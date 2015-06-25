@@ -19,7 +19,7 @@
             <?php
                 foreach ($this->users as $user) {
                     echo '<tr>
-                            <td><a href="'.URL.'usersettings/user/'.$user['id'].'">'.$user['id'].'</a></td>
+                            <td><a href="'.URL.'userchange/index/'.$user['id'].'">'.$user['id'].'</a></td>
                             <td>'.$user['login'].'</td>
                             <td>'.$user['imie'].'</td>
                             <td>'.$user['nazwisko'].'</td>
@@ -30,15 +30,15 @@
                             <td>'.$user['oplata'].'</td>
                             <td><div class="btn-group btn-group-xs">';
 if($user['stan'] != 1)
-    echo '<button type="button" class="btn btn-success" onclick="window.location.href = \'\'">Aktywuj</button>';
-    echo '<button type="submit" class="btn btn-primary" onclick="window.location.href = \'\'">Edytuj</button>';
+    echo '<button type="button" class="btn btn-success" onclick="window.location.href = \''.URL."userchange/accept/".$user['id']."/usersettings/".$this->showUsersCallbackLink.'/'.$this->listing['count'].'/'.$this->listing['orderBy'].'/'.$this->listing['oldsort'].'/'.$this->activePage.'\'">Aktywuj</button>';
+    echo '<button type="submit" class="btn btn-primary" onclick="window.location.href = \''.URL.'userchange/index/'.$user['id'].'\'">Edytuj</button>';
 if($user['oplata'] != 1)
-    echo '<button type="submit" class="btn btn-success" onclick="window.location.href = \'\'">Opłacił</button>';
+    echo '<button type="submit" class="btn btn-success" onclick="window.location.href = \''.URL."userchange/paid/".$user['id']."/usersettings/".$this->showUsersCallbackLink.'/'.$this->listing['count'].'/'.$this->listing['orderBy'].'/'.$this->listing['oldsort'].'/'.$this->activePage.'\'">Opłacił</button>';
 if($user['oplata'] == 1)
-    echo '<button type="submit" class="btn btn-warning" onclick="window.location.href = \'\'">Nie opłacił</button>';
+    echo '<button type="submit" class="btn btn-warning" onclick="window.location.href = \''.URL."userchange/unpaid/".$user['id']."/usersettings/".$this->showUsersCallbackLink.'/'.$this->listing['count'].'/'.$this->listing['orderBy'].'/'.$this->listing['oldsort'].'/'.$this->activePage.'\'">Nie opłacił</button>';
 if($user['stan'] != 2)
-    echo '<button type="submit" class="btn btn-warning" onclick="window.location.href = \'\'">Blokuj</button>';
-    echo '<button type="submit" class="btn btn-danger" onclick="window.location.href = \'\'">Usuń</button>
+    echo '<button type="submit" class="btn btn-warning" onclick="window.location.href = \''.URL."userchange/block/".$user['id']."/usersettings/".$this->showUsersCallbackLink.'/'.$this->listing['count'].'/'.$this->listing['orderBy'].'/'.$this->listing['oldsort'].'/'.$this->activePage.'\'">Blokuj</button>';
+    echo '<button type="submit" class="btn btn-danger" onclick="window.location.href = \''.URL."userchange/delete/".$user['id']."/usersettings/".$this->showUsersCallbackLink.'/'.$this->listing['count'].'/'.$this->listing['orderBy'].'/'.$this->listing['oldsort'].'/'.$this->activePage.'\'">Usuń</button>
                         </div></td>
                       </tr>';
                 }   

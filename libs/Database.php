@@ -70,12 +70,12 @@ class Database extends PDO
         $fieldDetails = rtrim($fieldDetails, ',');
         
         $sth = $this->prepare("UPDATE $table SET $fieldDetails WHERE $where");
-        
+     
         foreach ($data as $key => $value) {
             $sth->bindValue(":$key", $value);
         }
         
-        $sth->execute();
+        return $sth->execute();
     }
     
     /**

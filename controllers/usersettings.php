@@ -19,8 +19,8 @@ class Usersettings extends Controller {
         array_push($this->view->leftMenu, array('active' => false, 'ico' => 'lock', 'link' => 'usersettings/blocked', 'title' => "Zablokowani"));
         array_push($this->view->leftMenu, array('active' => false, 'ico' => 'thumbs-up', 'link' => 'usersettings/accepted', 'title' => "Zaakceptowani"));
         array_push($this->view->leftMenu, array('active' => false, 'ico' => 'thumbs-down', 'link' => 'usersettings/unaccepted', 'title' => "Niezaakceptowani"));
-        array_push($this->view->leftMenu, array('active' => false, 'ico' => 'plus', 'link' => 'usersettings/adduser', 'title' => "Dodaj nowego użytkownika"));
-        array_push($this->view->leftMenu, array('active' => false, 'ico' => 'plus', 'link' => 'usersettings/adddevice', 'title' => "Dodaj nowe urządzenie"));
+        array_push($this->view->leftMenu, array('active' => false, 'ico' => 'plus', 'link' => 'userchange/index/new', 'title' => "Dodaj nowego użytkownika"));
+        array_push($this->view->leftMenu, array('active' => false, 'ico' => 'plus', 'link' => 'devicechange/adddevice/new', 'title' => "Dodaj nowe urządzenie"));
         for ($i = 0; $i < count($this->view->leftMenu); $i++) {
             if ($this->view->leftMenu[$i]['link'] == 'usersettings/'.$active){
                 $this->view->leftMenu[$i]['active'] = true;
@@ -43,16 +43,18 @@ class Usersettings extends Controller {
         $this->view->render('usersettings/showUsers');
     }
 
-    private function showNumberOfPages($visible, $current, $where){       
+    private function generateNumberOfPages($visible, $current, $where){       
         $all = $this->model->getUsersCount($where);
         $this->view->pages = array();
         $index = 1;
         for($i = 0; $i < $all ; $i=$i+$visible){
             $active = ($i==$current)?true:false;
+            if ($active)
+                $this->view->activePage = $i;
             array_push($this->view->pages, array('index' => $index, 'start' => $i, 'active' => $active));
             $index++;
         }
-        $this->view->render('usersettings/showPages');
+        
     }
     private function showRecordsLimit(){       
         $this->view->render('usersettings/showRecordsLimit');
@@ -81,10 +83,13 @@ class Usersettings extends Controller {
         $this->view->render('header');
         $this->renderLeftMenu($callbackLink);
         $this->view->showUsersCallbackLink = $callbackLink;
+        //trzeba odpalić przed showusers bo ustawia zmienną $this->view->activePage  która jest potrzebna dla showUsers
+        // a dopiero później wyrenderować showPages
+        $this->generateNumberOfPages($count, $start, $where);
         $this->showUsers($count, $orderBy, $sort, $start, $where);
-        $this->showNumberOfPages($count, $start, $where);
+        $this->view->render('usersettings/showPages');
         $this->showRecordsLimit();
-        array_push($this->view->info, array('type' => 'warning', 'text' => 'Aby przejść do urządzeń użutkownika kliknij na liczbę urządzeń.<br>Aby przejść do użytkownika kliknij na jego ID.'));
+        array_push($this->view->info, array('type' => 'warning', 'text' => 'Aby przejść do urządzeń użytkownika kliknij na liczbę urządzeń.<br>Aby przejść do użytkownika kliknij na jego ID.'));
         $this->view->render('usersettings/info');
         $this->view->render('footerWithMenu');
     }

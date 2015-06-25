@@ -2,7 +2,7 @@
 
 if (isset($this->info)) {
     foreach ($this->info as $info) {
-        echo '<div id="done" style="text-align:center;" class="alert alert-' . $info['type'] . '"><strong>' . @$info['boldtext'] . '</strong>' . @$info['text'] . '</div>';
+        echo '<div style="text-align:center;" class="done alert alert-' . $info['type'] . '"><strong>' . @$info['boldtext'] . '</strong>' . @$info['text'] . '</div>';
     }
 }
 /*
