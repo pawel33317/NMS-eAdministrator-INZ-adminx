@@ -37,9 +37,9 @@
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="index.php">Ustawienia</a></li>
-                        <li><a href="?operation=lout">Wyloguj</a></li>
+                        <li><a href="<?=URL?>index/logout">Wyloguj</a></li>
                     </ul>
-                    <form class="navbar-form navbar-right" action="index.php" method="GET">
+                    <form class="navbar-form navbar-right" action="<?=URL?>usersettings/search" method="POST">
                         <input type="text" class="form-control" name="search" placeholder="Szukaj...">
                     </form>
                 </div>

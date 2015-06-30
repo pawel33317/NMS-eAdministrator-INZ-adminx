@@ -5,13 +5,13 @@
 </thead>
 <tbody>
 <tr><td><a href="">firewall</a></td><td><div class="btn-group btn-group-xs">
-    <button type="button" class="btn btn-success" onclick="window.location.href = '<?=URL?>services/changeService/firewall/1'">Przeładuj</button>
+    <button type="button" class="btn btn-success" onclick="window.location.href = '<?=URL?>services/changeService/firewall/4'">Przeładuj</button>
 </div></td></tr>
 <tr><td><a href="">TC - traffic control</a></td><td><div class="btn-group btn-group-xs">
-    <button type="button" class="btn btn-success" onclick="window.location.href = '<?=URL?>services/changeService/tc/1'">Przeładuj</button>
+    <button type="button" class="btn btn-success" onclick="window.location.href = '<?=URL?>services/changeService/tc/4'">Przeładuj</button>
 </div></td></tr>
 <tr><td><a href="">dhcp - konfiguracja</a></td><td><div class="btn-group btn-group-xs">
-    <button type="button" class="btn btn-success" onclick="window.location.href = '<?=URL?>services/changeService/dhcp/1'">Przeładuj</button>
+    <button type="button" class="btn btn-success" onclick="window.location.href = '<?=URL?>services/changeService/dhcp/4'">Przeładuj</button>
 </div></td></tr>
 <tr><td><a href="">dhcp</a></td><td><div class="btn-group btn-group-xs">
     <button type="button" class="btn btn-success" onclick="window.location.href = '<?=URL?>services/changeService/dhcp/1'">Uruchom</button>
@@ -41,3 +41,4 @@
 <button type="button" class="btn btn-danger">Blokuj możliwość rejestracji do sieci</button>
 <button type="button" class="btn btn-danger">Blokuj możliwość zakładania konta</button>
 <button type="button" class="btn btn-danger">Usuń starych użytkowników</button>
+<button type="button" class="btn btn-danger">Nieaktywowani bez dostępu do internetu</button>

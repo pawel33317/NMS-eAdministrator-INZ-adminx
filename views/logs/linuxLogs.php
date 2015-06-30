@@ -4,7 +4,7 @@ if (isset($this->linuxLogs)) {
     foreach ($this->linuxLogs as $log) {
         echo '<div class="panel panel-default">
             <div class="panel-heading">'.$log['title'].'</div>
-            <div class="panel-body"><pre>'.$log['content'].'</pre></div>
+            <div class="panel-body"><pre  id="log'.$log['id'].'">'.$log['content'].'</pre></div>
            </div>';
     }   
 }

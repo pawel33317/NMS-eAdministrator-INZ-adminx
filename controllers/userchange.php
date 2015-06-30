@@ -13,14 +13,14 @@ class Userchange extends Controller {
 
     function renderLeftMenu($active = false){
         array_push($this->view->leftMenu, array('active' => false, 'ico' => 'user', 'link' => 'usersettings/index', 'title' => "Użytkownicy"));
-        array_push($this->view->leftMenu, array('active' => false, 'ico' => 'inbox', 'link' => 'usersettings/devices', 'title' => "Urządzenia"));
+        array_push($this->view->leftMenu, array('active' => false, 'ico' => 'inbox', 'link' => 'devicesettings/index', 'title' => "Urządzenia"));
         array_push($this->view->leftMenu, array('active' => false, 'ico' => 'ok', 'link' => 'usersettings/paid', 'title' => "Opłaceni"));
         array_push($this->view->leftMenu, array('active' => false, 'ico' => 'remove', 'link' => 'usersettings/unpaid', 'title' => "Nieopłaceni"));
         array_push($this->view->leftMenu, array('active' => false, 'ico' => 'lock', 'link' => 'usersettings/blocked', 'title' => "Zablokowani"));
         array_push($this->view->leftMenu, array('active' => false, 'ico' => 'thumbs-up', 'link' => 'usersettings/accepted', 'title' => "Zaakceptowani"));
         array_push($this->view->leftMenu, array('active' => false, 'ico' => 'thumbs-down', 'link' => 'usersettings/unaccepted', 'title' => "Niezaakceptowani"));
         array_push($this->view->leftMenu, array('active' => $active, 'ico' => 'plus', 'link' => 'userchange/index/new', 'title' => "Dodaj nowego użytkownika"));
-        array_push($this->view->leftMenu, array('active' => false, 'ico' => 'plus', 'link' => 'devicechange/adddevice/new', 'title' => "Dodaj nowe urządzenie"));
+        array_push($this->view->leftMenu, array('active' => false, 'ico' => 'plus', 'link' => 'devicechange/index/new', 'title' => "Dodaj nowe urządzenie"));
         $this->view->render('leftMenu');
     }
     

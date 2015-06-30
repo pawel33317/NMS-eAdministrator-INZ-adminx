@@ -44,4 +44,10 @@ class Index extends Controller {
         //Header("Location: " . URL . "adminpanel");
     }
     
+    
+    function logout() {
+        //gwarantuje ze jest zalogowany jak nie to przekieruje
+        $this->auth->logout();
+        //Header("Location: " . URL . "adminpanel");
+    }
 }

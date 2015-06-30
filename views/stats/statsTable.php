@@ -28,12 +28,6 @@
 <!--<div style="width:100%; margin-top:25px;">
     <p class="bg-primary" style="border-radius: 5px; padding:10px; width:100%;  display: inline-block;"><strong>Monitorowane usługi (5)</strong> (zielony - działają ok)</p>
 </div>-->
-<div class="alert alert-info"><strong>Monitorowane usługi (5)</strong> (zielony - działają ok)</div>
-        <?php
-            foreach ($this->serviceStates as $service) {
-                echo '<button type="button" class="btn ';
-                echo ($service['state'] == 1)?'btn-success':'btn-danger';
-                echo '">'.$service['service'].'</button> ';
-            }   
-        ?>
+<div class="alert alert-info"><strong>Monitorowane usługi (5)</strong> (zielony - działają ok)</div><div id="serviceStates"></div>
+      
 

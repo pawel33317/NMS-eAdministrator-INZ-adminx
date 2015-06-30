@@ -13,14 +13,14 @@ class Usersettings extends Controller {
     
     function renderLeftMenu($active = NULL){
         array_push($this->view->leftMenu, array('active' => false, 'ico' => 'user', 'link' => 'usersettings/index', 'title' => "Użytkownicy"));
-        array_push($this->view->leftMenu, array('active' => false, 'ico' => 'inbox', 'link' => 'usersettings/devices', 'title' => "Urządzenia"));
+        array_push($this->view->leftMenu, array('active' => false, 'ico' => 'inbox', 'link' => 'devicesettings/index', 'title' => "Urządzenia"));
         array_push($this->view->leftMenu, array('active' => false, 'ico' => 'ok', 'link' => 'usersettings/paid', 'title' => "Opłaceni"));
         array_push($this->view->leftMenu, array('active' => false, 'ico' => 'remove', 'link' => 'usersettings/unpaid', 'title' => "Nieopłaceni"));
         array_push($this->view->leftMenu, array('active' => false, 'ico' => 'lock', 'link' => 'usersettings/blocked', 'title' => "Zablokowani"));
         array_push($this->view->leftMenu, array('active' => false, 'ico' => 'thumbs-up', 'link' => 'usersettings/accepted', 'title' => "Zaakceptowani"));
         array_push($this->view->leftMenu, array('active' => false, 'ico' => 'thumbs-down', 'link' => 'usersettings/unaccepted', 'title' => "Niezaakceptowani"));
         array_push($this->view->leftMenu, array('active' => false, 'ico' => 'plus', 'link' => 'userchange/index/new', 'title' => "Dodaj nowego użytkownika"));
-        array_push($this->view->leftMenu, array('active' => false, 'ico' => 'plus', 'link' => 'devicechange/adddevice/new', 'title' => "Dodaj nowe urządzenie"));
+        array_push($this->view->leftMenu, array('active' => false, 'ico' => 'plus', 'link' => 'devicechange/index/new', 'title' => "Dodaj nowe urządzenie"));
         for ($i = 0; $i < count($this->view->leftMenu); $i++) {
             if ($this->view->leftMenu[$i]['link'] == 'usersettings/'.$active){
                 $this->view->leftMenu[$i]['active'] = true;
@@ -40,11 +40,17 @@ class Usersettings extends Controller {
         $this->view->listing['sort'] = ($sort == 'ASC')?'DESC':'ASC';
         $this->view->listing['oldsort'] = ($sort != 'ASC')?'DESC':'ASC';
         $this->view->users = $this->model->getUsers($count*1, $orderBy, $sort, $start*1, $where);
+        for ($i = 0; $i < count($this->view->users); $i++) {
+            $this->view->users[$i]['oplataOpis'] = ($this->view->users[$i]['oplata']==1)?'OK':'Brak';
+            $this->view->users[$i]['stanOpis'] = ($this->view->users[$i]['stan']==0)?'Nieaktywowany':(($this->view->users[$i]['stan']==1)?'Aktywowany':'Zablokowany');
+        }
+        
         $this->view->render('usersettings/showUsers');
     }
 
     private function generateNumberOfPages($visible, $current, $where){       
         $all = $this->model->getUsersCount($where);
+        $this->view->allUsers = $all;
         $this->view->pages = array();
         $index = 1;
         for($i = 0; $i < $all ; $i=$i+$visible){
@@ -53,8 +59,7 @@ class Usersettings extends Controller {
                 $this->view->activePage = $i;
             array_push($this->view->pages, array('index' => $index, 'start' => $i, 'active' => $active));
             $index++;
-        }
-        
+        }  
     }
     private function showRecordsLimit(){       
         $this->view->render('usersettings/showRecordsLimit');
@@ -77,6 +82,34 @@ class Usersettings extends Controller {
     
     function unpaid($count = 50, $orderBy = 'id', $sort = 'DESC', $start = 0) {
         $this->index($count, $orderBy, $sort, $start, $where = ' where oplata = 0 ', 'unpaid');
+    }
+    private function searchUsers($search){
+        //*1 parsuje na inta
+        $this->view->listing['count'] = 99999;
+        $this->view->listing['orderBy'] = 'id';
+        $this->view->listing['start'] = 0;
+        $this->view->listing['where'] = '';
+        $this->view->listing['sort'] = 'DESC';
+        $this->view->listing['oldsort'] = 'DESC';
+        $this->view->users = $this->model->searchUsers($search);
+        for ($i = 0; $i < count($this->view->users); $i++) {
+            $this->view->users[$i]['oplataOpis'] = ($this->view->users[$i]['oplata']==1)?'OK':'Brak';
+            $this->view->users[$i]['stanOpis'] = ($this->view->users[$i]['stan']==0)?'Nieaktywowany':(($this->view->users[$i]['stan']==1)?'Aktywowany':'Zablokowany');
+        }       
+        $this->view->render('usersettings/showUsers');
+    }
+    function search() {
+        $this->view->render('header');
+        $this->renderLeftMenu('index');
+        $this->view->activePage = 0;
+        $this->view->showUsersCallbackLink = 'index';
+        //trzeba odpalić przed showusers bo ustawia zmienną $this->view->activePage  która jest potrzebna dla showUsers
+        // a dopiero później wyrenderować showPages
+        $this->view->allUsers = $_POST['search'];
+        $this->searchUsers($_POST['search']);
+        array_push($this->view->info, array('type' => 'warning', 'text' => 'Aby przejść do urządzeń użytkownika kliknij na liczbę urządzeń.<br>Aby przejść do użytkownika kliknij na jego ID.'));
+        $this->view->render('usersettings/info');
+        $this->view->render('footerWithMenu');
     }
     
     function index($count = 50, $orderBy = 'id', $sort = 'DESC', $start = 0, $where = '',$callbackLink = "index") {

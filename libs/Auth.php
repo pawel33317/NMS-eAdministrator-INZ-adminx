@@ -37,6 +37,13 @@ class Auth  extends Controller{
             }
         }
     }
+    
+    
+    public function logout(){
+        setcookie('admlogin',"",time()-36000,'/');
+        setcookie('admpassword',"",time()-36000,'/');
+	header('Location: '.URL);
+    }
     /*
     public function logInUser($userID, $userPassMd5){
         setcookie("user_id", $userID, time() + 360000,'/');

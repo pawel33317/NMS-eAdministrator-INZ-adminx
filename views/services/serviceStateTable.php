@@ -4,13 +4,7 @@
 </div>
 <!--<div class="alert alert-info"><strong>Monitorowane usługi (5)</strong> (zielony - działają ok)</div>-->
 <div class="panel panel-default">
-    <div class="panel-body">
-        <?php
-            foreach ($this->serviceStates as $service) {
-                echo '<button type="button" class="btn ';
-                echo ($service['state'] == 1)?'btn-success':'btn-danger';
-                echo '">'.$service['service'].'</button> ';
-            }   
-        ?>
+    <div class="panel-body" id="serviceStates">
+
     </div></div>
     

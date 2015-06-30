@@ -66,6 +66,7 @@ class Userchange_Model extends Model {
             'haslo' => md5($_POST['haslo']),
             'login' => htmlspecialchars($_POST['login']),
             'datawaznoscikonta' => (strtotime("now") + 60*60*24*90),
+            'datarejestracji' => (strtotime("now")),
             'stan' => htmlspecialchars($_POST['stan']),
             'oplata' => htmlspecialchars($_POST['oplata']),
             'portyonof' => htmlspecialchars($_POST['portyonof']),

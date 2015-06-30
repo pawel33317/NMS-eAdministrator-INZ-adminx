@@ -17,7 +17,7 @@ class Logs_Model extends Model {
     }
     public function getPanelLogs($logLimit) {
         //pezez limit nie można było użyć naszej funkcji select bo cośtam chyba że limit nie jest intem
-        $sth = $this->db->prepare('select * from panelLogs order by id limit 0, :limitx ');
+        $sth = $this->db->prepare('select * from panelLogs order by dateadd desc limit 0, :limitx ');
         $sth->bindParam(':limitx', $logLimit, PDO::PARAM_INT);
         $sth->execute();
         return $sth->fetchAll(PDO::FETCH_ASSOC);

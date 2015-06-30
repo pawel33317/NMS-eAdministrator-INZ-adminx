@@ -10,20 +10,7 @@ class Stats extends Controller {
         $this->auth->handleLogin();
         $this->view->leftMenu = array();
     }
-/*
-    private function readLog($file){
-        $fileContent = file_get_contents($file, true);
-        $convert = explode("\n", $fileContent);
-        $fileContent = '';
-        for ($i = 0; $i < count($convert); $i++) {
-            $fileContent = $fileContent . $convert[$i];
-            if ($i < count($convert) - 1)
-                $fileContent = $fileContent . '<br>';
-        }
-        return $fileContent;
-    }
 
-*/
     private function loadStats() {
         $wszyscy_userzy = $this->model->getUsersCount();
         $wszystkie_urzadzenia = $this->model->getDevicesCount();
@@ -53,15 +40,6 @@ class Stats extends Controller {
         $this->view->stats['lastweeku'] = $lastweeku;
 
         $this->view->serviceStates = $this->model->getServiceStates();
-        
-        /*$LinuxLogs = new Linux();
-        $LinuxLogs->initLog();
-        $file1 = $this->readLog($LinuxLogs->_log_last5);
-        $file2 = $this->readLog($LinuxLogs->_log_tail5dmesg);
-        $file3 = $this->readLog($LinuxLogs->_log_5varLogCron);
-        $file4 = $this->readLog($LinuxLogs->_log_tail5varLogMessages);
-        $file5 = $this->readLog($LinuxLogs->_log_tail10varLibDhcpdDhcpdLeases);
-        $file6 = $this->readLog($LinuxLogs->_log_panelLog);*/
 
     }
 
@@ -74,5 +52,6 @@ class Stats extends Controller {
             . 'rejestrować 2 razy tego samego urządzenia, w razie problemów zgłosić się do administratora pokój 401.'));
         $this->view->render('usersettings/info');*/
         $this->view->render('footerWithMenu');
+        $this->view->render('services/serviceStatesgetAjax');
     }
 }
